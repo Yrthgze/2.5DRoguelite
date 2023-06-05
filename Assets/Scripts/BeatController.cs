@@ -5,6 +5,7 @@ using UnityEngine;
 public class BeatController : MonoBehaviour
 {
     private AudioSource c_as_this_audio;
+    private int i_pulse_frequency;
     [SerializeField] private int i_bpm = 120;
     [SerializeField] private Interval[] _intervals;
     private float f_last_interval_time_samples = 0;
@@ -13,27 +14,28 @@ public class BeatController : MonoBehaviour
     void Start()
     {
         c_as_this_audio = GetComponent<AudioSource>();
-        foreach(Interval c_interval in _intervals)
+        i_pulse_frequency = c_as_this_audio.clip.frequency * (60/i_bpm);
+        foreach (Interval c_interval in _intervals)
         {
             c_interval.CalculateSamplesPerPulse(i_bpm, c_as_this_audio.clip.frequency);
         }
     }
 
-    void BeatDetection(float f_current_time_samples)
+    void PulseDetection(int i_current_time_samples)
     {
-        if(Mathf.Abs(f_current_time_samples - f_last_interval_time_samples) < 5000)
+        int i_pulse_distance = i_current_time_samples >= i_pulse_frequency ?
+            i_current_time_samples % i_pulse_frequency:
+            -(Mathf.Abs(i_current_time_samples - i_pulse_frequency));
+        if(i_pulse_distance <= 5000)
         {
-            Debug.Log("Beat correct detected");
-        }
-        else
-        {
-            Debug.Log(Mathf.Abs(f_current_time_samples - f_last_interval_time_samples));
+            Debug.Log("Beat Detection Corretc");
         }
     }
 
     // Update is called once per frame
     void Update()
     {
+        //! Only if an interval is active
         foreach (Interval c_interval in _intervals)
         {
             if(c_interval.IsActive())
@@ -47,7 +49,7 @@ public class BeatController : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.Space))
         {
-            BeatDetection(c_as_this_audio.timeSamples);
+            PulseDetection(c_as_this_audio.timeSamples);
         }
     }
 }
