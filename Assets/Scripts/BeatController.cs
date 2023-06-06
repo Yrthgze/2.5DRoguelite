@@ -1,7 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
+
+public enum ECorrectness
+{
+    EPerfect = 0,
+    EGood = 1,
+    EMidgood = 2,
+    EBad = 3,
+    ECount = 4
+}
 
 public class BeatController : MonoBehaviour
 {
@@ -29,26 +40,30 @@ public class BeatController : MonoBehaviour
 
     void PulseDetection(int i_current_time_samples)
     {
+        ECorrectness e_correctness = ECorrectness.EBad;
         int i_pulse_distance = i_current_time_samples >= i_pulse_frequency ?
             i_current_time_samples % i_pulse_frequency:
             -(Mathf.Abs(i_current_time_samples - i_pulse_frequency));
         if(i_pulse_distance <= m_f_perfect_pulse_distance)
         {
             Debug.Log("Perfect beat!");
+            e_correctness = ECorrectness.EPerfect;
         }
         else if (i_pulse_distance <= m_f_good_pulse_distance)
         {
             Debug.Log("Good beat!");
+            e_correctness = ECorrectness.EGood;
         }
         else if (i_pulse_distance <= m_f_wrong_pulse_distance)
         {
             Debug.Log("Need to hear the beat!");
+            e_correctness = ECorrectness.EMidgood;
         }
         else
         {
             Debug.Log("Completely out of tempo!");
         }
-        new OnScreenTexts(this.gameObject);
+        new OnScreenTexts(e_correctness);
     }
 
     // Update is called once per frame
@@ -120,10 +135,28 @@ public class Interval
 [System.Serializable]
 public class OnScreenTexts
 {
+    private string[] s_possible_strings = new string[(int)ECorrectness.ECount] {"Perfect", "Good", "Not bad", "Awful" };
+    private const TextAnchor upperLeft = TextAnchor.UpperLeft;
     private TextMeshPro m_s_text;
-    public OnScreenTexts(GameObject go_beat)
+    public OnScreenTexts(ECorrectness e_correctness)
     {
-        m_s_text = go_beat.gameObject.AddComponent<TextMeshPro>();
-        m_s_text.text = "SUPU";
+        GameObject myText;
+        Canvas myCanvas;
+        TextMeshProUGUI text;
+
+        myCanvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+        myCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
+
+        // Text
+        myText = new GameObject();
+        myText.transform.parent = myCanvas.transform;
+        myText.name = s_possible_strings[(int)e_correctness];
+
+        text = myText.AddComponent<TextMeshProUGUI>();
+        text.font = (TMPro.TMP_FontAsset)Resources.Load("MyFont");
+        text.text = s_possible_strings[(int)e_correctness];
+        text.fontSize = 100;
+
+
     }
 }
