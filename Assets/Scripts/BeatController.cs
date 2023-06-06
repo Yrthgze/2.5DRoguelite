@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class BeatController : MonoBehaviour
 {
@@ -20,10 +21,6 @@ public class BeatController : MonoBehaviour
         m_f_wrong_pulse_distance = f_maximum_pulse_delay / 2 * i_pulse_frequency;
         m_f_good_pulse_distance = m_f_wrong_pulse_distance / 2;
         m_f_perfect_pulse_distance = m_f_good_pulse_distance / 2;
-        Debug.Log(i_pulse_frequency);
-        Debug.Log(m_f_wrong_pulse_distance);
-        Debug.Log(m_f_good_pulse_distance);
-        Debug.Log(m_f_perfect_pulse_distance);
         foreach (Interval c_interval in _intervals)
         {
             c_interval.CalculateSamplesPerPulse(i_bpm, c_as_this_audio.clip.frequency);
@@ -51,7 +48,7 @@ public class BeatController : MonoBehaviour
         {
             Debug.Log("Completely out of tempo!");
         }
-        Debug.Log(i_pulse_distance);
+        new OnScreenTexts(this.gameObject);
     }
 
     // Update is called once per frame
@@ -118,4 +115,15 @@ public class Interval
         return b_ret;
     }
 
+}
+
+[System.Serializable]
+public class OnScreenTexts
+{
+    private TextMeshPro m_s_text;
+    public OnScreenTexts(GameObject go_beat)
+    {
+        m_s_text = go_beat.gameObject.AddComponent<TextMeshPro>();
+        m_s_text.text = "SUPU";
+    }
 }
