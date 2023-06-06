@@ -8,13 +8,22 @@ public class BeatController : MonoBehaviour
     private int i_pulse_frequency;
     [SerializeField] private int i_bpm = 120;
     [SerializeField] private Interval[] _intervals;
+    [SerializeField] private float f_maximum_pulse_delay = 0.8f;
     private float f_last_interval_time_samples = 0;
+    private float m_f_wrong_pulse_distance, m_f_good_pulse_distance, m_f_perfect_pulse_distance;
 
     // Start is called before the first frame update
     void Start()
     {
         c_as_this_audio = GetComponent<AudioSource>();
-        i_pulse_frequency = c_as_this_audio.clip.frequency * (60/i_bpm);
+        i_pulse_frequency = (int)(c_as_this_audio.clip.frequency * (60/(float)i_bpm));
+        m_f_wrong_pulse_distance = f_maximum_pulse_delay / 2 * i_pulse_frequency;
+        m_f_good_pulse_distance = m_f_wrong_pulse_distance / 2;
+        m_f_perfect_pulse_distance = m_f_good_pulse_distance / 2;
+        Debug.Log(i_pulse_frequency);
+        Debug.Log(m_f_wrong_pulse_distance);
+        Debug.Log(m_f_good_pulse_distance);
+        Debug.Log(m_f_perfect_pulse_distance);
         foreach (Interval c_interval in _intervals)
         {
             c_interval.CalculateSamplesPerPulse(i_bpm, c_as_this_audio.clip.frequency);
@@ -26,10 +35,23 @@ public class BeatController : MonoBehaviour
         int i_pulse_distance = i_current_time_samples >= i_pulse_frequency ?
             i_current_time_samples % i_pulse_frequency:
             -(Mathf.Abs(i_current_time_samples - i_pulse_frequency));
-        if(i_pulse_distance <= 5000)
+        if(i_pulse_distance <= m_f_perfect_pulse_distance)
         {
-            Debug.Log("Beat Detection Corretc");
+            Debug.Log("Perfect beat!");
         }
+        else if (i_pulse_distance <= m_f_good_pulse_distance)
+        {
+            Debug.Log("Good beat!");
+        }
+        else if (i_pulse_distance <= m_f_wrong_pulse_distance)
+        {
+            Debug.Log("Need to hear the beat!");
+        }
+        else
+        {
+            Debug.Log("Completely out of tempo!");
+        }
+        Debug.Log(i_pulse_distance);
     }
 
     // Update is called once per frame
@@ -43,6 +65,7 @@ public class BeatController : MonoBehaviour
                 if(c_interval.HasIntervalEnded(c_as_this_audio.timeSamples))
                 {
                     f_last_interval_time_samples = c_as_this_audio.timeSamples;
+                    GameObject.Find("Main Camera").GetComponent<AudioSource>().Play();
                     break;
                 }
             }
