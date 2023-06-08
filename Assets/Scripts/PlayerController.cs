@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    {/*
         if(Input.GetKey(KeyCode.UpArrow))
         {
             m_c_animator.SetInteger("Walking", 1);
@@ -36,6 +36,6 @@ public class PlayerController : MonoBehaviour
         else
         {
             m_c_animator.SetInteger("Walking", 0);
-        }
+        }*/
     }
 }

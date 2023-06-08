@@ -551,7 +551,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 961739749}
   m_LocalRotation: {x: -0.00022966269, y: 0.9815645, z: -0.1911274, w: -0.0011785898}
-  m_LocalPosition: {x: -0.2239252, y: 2.9709268, z: -3.6737287}
+  m_LocalPosition: {x: -0.2239252, y: 3.3, z: -3.207}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -814,6 +814,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Mage
+      objectReference: {fileID: 0}
+    - target: {fileID: 7552349319879033262, guid: a21528501777a4ae9b2b4e36433eb824,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7552349319879033263, guid: a21528501777a4ae9b2b4e36433eb824,
         type: 3}
