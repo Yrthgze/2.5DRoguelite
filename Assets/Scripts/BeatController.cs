@@ -1,7 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
+
+
+public enum ECorrectness
+{
+    EPerfect = 0,
+    EGood = 1,
+    EMidgood = 2,
+    EBad = 3,
+    ECount = 4
+}
 
 public class BeatController : MonoBehaviour
 {
@@ -29,26 +41,31 @@ public class BeatController : MonoBehaviour
 
     void PulseDetection(int i_current_time_samples)
     {
+        ECorrectness e_correctness = ECorrectness.EBad;
         int i_pulse_distance = i_current_time_samples >= i_pulse_frequency ?
             i_current_time_samples % i_pulse_frequency:
             -(Mathf.Abs(i_current_time_samples - i_pulse_frequency));
         if(i_pulse_distance <= m_f_perfect_pulse_distance)
         {
             Debug.Log("Perfect beat!");
+            e_correctness = ECorrectness.EPerfect;
         }
         else if (i_pulse_distance <= m_f_good_pulse_distance)
         {
             Debug.Log("Good beat!");
+            e_correctness = ECorrectness.EGood;
         }
         else if (i_pulse_distance <= m_f_wrong_pulse_distance)
         {
             Debug.Log("Need to hear the beat!");
+            e_correctness = ECorrectness.EMidgood;
         }
         else
         {
             Debug.Log("Completely out of tempo!");
         }
-        new OnScreenTexts(this.gameObject);
+        OnScreenTexts temp_text = gameObject.AddComponent<OnScreenTexts>();
+        temp_text.SetCorrectness(e_correctness);
     }
 
     // Update is called once per frame
@@ -118,12 +135,51 @@ public class Interval
 }
 
 [System.Serializable]
-public class OnScreenTexts
+public class OnScreenTexts : MonoBehaviour
 {
-    private TextMeshPro m_s_text;
-    public OnScreenTexts(GameObject go_beat)
+    private string[] s_possible_strings = new string[(int)ECorrectness.ECount] {"Perfect", "Good", "Not bad", "Awful" };
+    private const TextAnchor upperLeft = TextAnchor.UpperLeft;
+    private TextMeshProUGUI m_s_text;
+    private GameObject go_temp;
+    public void Awake()
     {
-        m_s_text = go_beat.gameObject.AddComponent<TextMeshPro>();
-        m_s_text.text = "SUPU";
+        GameObject go_canvas;
+        Canvas c_canvas;
+
+        if (GameObject.Find("Canvas") == null)
+        {
+            go_canvas = new GameObject();
+            go_canvas.name = "Canvas";
+            go_canvas.AddComponent<Canvas>();
+        }
+
+        c_canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+        c_canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+
+        // Text
+        go_temp = new GameObject();
+        go_temp.transform.parent = c_canvas.transform;
+        go_temp.name = "TempGO";
+
+        m_s_text = go_temp.AddComponent<TextMeshProUGUI>();
+        m_s_text.font = (TMPro.TMP_FontAsset)Resources.Load("MyFont");
+        m_s_text.fontSize = 50;
+        m_s_text.alignment = TextAlignmentOptions.Center;
+        m_s_text.verticalAlignment = VerticalAlignmentOptions.Middle;
+        StartCoroutine(AutoDestroy());
+    }
+
+    public void SetCorrectness(ECorrectness e_correctness)
+    {
+        m_s_text.text = s_possible_strings[(int)e_correctness];
+        go_temp.GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 0);
+    }
+
+    IEnumerator AutoDestroy()
+    {
+        yield return new WaitForSeconds(2);
+        Debug.Log("Destroying");
+        //! Do something
+        Destroy(go_temp);
     }
 }
