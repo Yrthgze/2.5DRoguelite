@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+
 public enum ECorrectness
 {
     EPerfect = 0,
@@ -63,7 +64,8 @@ public class BeatController : MonoBehaviour
         {
             Debug.Log("Completely out of tempo!");
         }
-        new OnScreenTexts(e_correctness);
+        OnScreenTexts temp_text = gameObject.AddComponent<OnScreenTexts>();
+        temp_text.SetCorrectness(e_correctness);
     }
 
     // Update is called once per frame
@@ -133,30 +135,51 @@ public class Interval
 }
 
 [System.Serializable]
-public class OnScreenTexts
+public class OnScreenTexts : MonoBehaviour
 {
     private string[] s_possible_strings = new string[(int)ECorrectness.ECount] {"Perfect", "Good", "Not bad", "Awful" };
     private const TextAnchor upperLeft = TextAnchor.UpperLeft;
-    private TextMeshPro m_s_text;
-    public OnScreenTexts(ECorrectness e_correctness)
+    private TextMeshProUGUI m_s_text;
+    private GameObject go_temp;
+    public void Awake()
     {
-        GameObject myText;
-        Canvas myCanvas;
-        TextMeshProUGUI text;
+        GameObject go_canvas;
+        Canvas c_canvas;
 
-        myCanvas = GameObject.Find("Canvas").GetComponent<Canvas>();
-        myCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        if (GameObject.Find("Canvas") == null)
+        {
+            go_canvas = new GameObject();
+            go_canvas.name = "Canvas";
+            go_canvas.AddComponent<Canvas>();
+        }
+
+        c_canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+        c_canvas.renderMode = RenderMode.ScreenSpaceOverlay;
 
         // Text
-        myText = new GameObject();
-        myText.transform.parent = myCanvas.transform;
-        myText.name = s_possible_strings[(int)e_correctness];
+        go_temp = new GameObject();
+        go_temp.transform.parent = c_canvas.transform;
+        go_temp.name = "TempGO";
 
-        text = myText.AddComponent<TextMeshProUGUI>();
-        text.font = (TMPro.TMP_FontAsset)Resources.Load("MyFont");
-        text.text = s_possible_strings[(int)e_correctness];
-        text.fontSize = 100;
+        m_s_text = go_temp.AddComponent<TextMeshProUGUI>();
+        m_s_text.font = (TMPro.TMP_FontAsset)Resources.Load("MyFont");
+        m_s_text.fontSize = 50;
+        m_s_text.alignment = TextAlignmentOptions.Center;
+        m_s_text.verticalAlignment = VerticalAlignmentOptions.Middle;
+        StartCoroutine(AutoDestroy());
+    }
 
+    public void SetCorrectness(ECorrectness e_correctness)
+    {
+        m_s_text.text = s_possible_strings[(int)e_correctness];
+        go_temp.GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 0);
+    }
 
+    IEnumerator AutoDestroy()
+    {
+        yield return new WaitForSeconds(2);
+        Debug.Log("Destroying");
+        //! Do something
+        Destroy(go_temp);
     }
 }
