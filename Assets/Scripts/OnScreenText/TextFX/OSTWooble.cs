@@ -14,7 +14,7 @@ public class OSTWooble : OnScreenTextFX
 
     }
 
-    public override void ApplyEffect()
+    protected override void _ApplyEffect()
     {
         Debug.Log("Updating");
         m_text_to_apply_effect.ForceMeshUpdate();

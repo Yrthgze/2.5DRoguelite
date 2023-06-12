@@ -15,11 +15,11 @@ public class OSTRandomBounce : OnScreenTextFX
         i_rotation_orientation = Random.Range(-1.1f, 1f) >= 0 ? 1 : -1;
         //! Rotation goes backwards (if we want to move to the right, the z change must be negative, thats why the "-")
         f_rand_rotation_speed = Random.Range(3f, 20f) * -i_rotation_orientation;
+        m_rect_trans = m_text_to_apply_effect.GetComponent<RectTransform>();
     }
 
-    public override void ApplyEffect()
+    protected override void _ApplyEffect()
     {
-        m_rect_trans = m_go_to_apply_effect.GetComponent<RectTransform>();
         float f_x = Mathf.Abs(m_rect_trans.localPosition.x) + Random.Range(10, 20);
         float f_y = 18 * Mathf.Sqrt(f_x);
         Debug.Log(f_x);

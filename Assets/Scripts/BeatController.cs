@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 
 public enum ECorrectness
@@ -24,6 +23,7 @@ public class BeatController : MonoBehaviour
     [SerializeField] private float f_maximum_pulse_delay = 0.8f;
     private float f_last_interval_time_samples = 0;
     private float m_f_wrong_pulse_distance, m_f_good_pulse_distance, m_f_perfect_pulse_distance;
+    private OnScreenTextsManager m_ost_manager;
 
     // Start is called before the first frame update
     void Start()
@@ -37,6 +37,7 @@ public class BeatController : MonoBehaviour
         {
             c_interval.CalculateSamplesPerPulse(i_bpm, c_as_this_audio.clip.frequency);
         }
+        m_ost_manager = GameObject.Find("OnScreenTextManager").GetComponent<OnScreenTextsManager>();
     }
 
     void PulseDetection(int i_current_time_samples)
@@ -64,8 +65,7 @@ public class BeatController : MonoBehaviour
         {
             Debug.Log("Completely out of tempo!");
         }
-        OnScreenTexts temp_text = gameObject.AddComponent<OnScreenTexts>();
-        temp_text.SetCorrectness(e_correctness);
+        m_ost_manager.GenerateText(e_correctness);
     }
 
     // Update is called once per frame
@@ -132,67 +132,4 @@ public class Interval
         return b_ret;
     }
 
-}
-
-[System.Serializable]
-public class OnScreenTexts : MonoBehaviour
-{
-    private string[] s_possible_strings = new string[(int)ECorrectness.ECount] {"Perfect", "Good", "Not bad", "Awful" };
-    private const TextAnchor upperLeft = TextAnchor.UpperLeft;
-    private TextMeshProUGUI m_s_text;
-    private GameObject go_temp;
-    private OnScreenTextFXFactory m_os_text_factory;
-    private OnScreenTextFX m_actual_text_fx;
-
-    public void Awake()
-    {
-        GameObject go_canvas;
-        Canvas c_canvas;
-
-        if (GameObject.Find("Canvas") == null)
-        {
-            go_canvas = new GameObject();
-            go_canvas.name = "Canvas";
-            go_canvas.AddComponent<Canvas>();
-        }
-
-        c_canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
-        c_canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-
-        // Text
-        go_temp = new GameObject();
-        go_temp.transform.parent = c_canvas.transform;
-        go_temp.name = "TempGO";
-
-        m_s_text = go_temp.AddComponent<TextMeshProUGUI>();
-        m_s_text.font = (TMPro.TMP_FontAsset)Resources.Load("MyFont");
-        m_s_text.fontSize = 50;
-        m_s_text.alignment = TextAlignmentOptions.Center;
-        m_s_text.verticalAlignment = VerticalAlignmentOptions.Middle;
-        //StartCoroutine(AutoDestroy());
-        m_os_text_factory = new OnScreenTextFXFactory();
-        m_os_text_factory.SetText(this.gameObject, m_s_text);
-        m_actual_text_fx = m_os_text_factory.GetOSTFX();
-
-    }
-
-    public void Update()
-    {
-        m_actual_text_fx.ApplyEffect();
-    }
-
-    public void SetCorrectness(ECorrectness e_correctness)
-    {
-        m_s_text.text = s_possible_strings[(int)e_correctness];
-        go_temp.GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 0);
-    }
-
-    IEnumerator AutoDestroy()
-    {
-        yield return new WaitForSeconds(0.5f);
-        Debug.Log("Destroying");
-        //! Do something
-        Destroy(go_temp);
-        Destroy(this);
-    }
 }
