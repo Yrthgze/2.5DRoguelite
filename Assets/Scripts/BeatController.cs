@@ -141,12 +141,9 @@ public class OnScreenTexts : MonoBehaviour
     private const TextAnchor upperLeft = TextAnchor.UpperLeft;
     private TextMeshProUGUI m_s_text;
     private GameObject go_temp;
-    private Mesh m_mesh;
-    private Vector3[] m_vertices;
-    private RectTransform m_rect_trans;
+    private OnScreenTextFXFactory m_os_text_factory;
+    private OnScreenTextFX m_actual_text_fx;
 
-    private float f_rand_rotation_speed;
-    private int i_rotation_orientation;
     public void Awake()
     {
         GameObject go_canvas;
@@ -172,59 +169,16 @@ public class OnScreenTexts : MonoBehaviour
         m_s_text.fontSize = 50;
         m_s_text.alignment = TextAlignmentOptions.Center;
         m_s_text.verticalAlignment = VerticalAlignmentOptions.Middle;
+        //StartCoroutine(AutoDestroy());
+        m_os_text_factory = new OnScreenTextFXFactory();
+        m_os_text_factory.SetText(this.gameObject, m_s_text);
+        m_actual_text_fx = m_os_text_factory.GetOSTFX();
 
-        m_rect_trans = m_s_text.GetComponent<RectTransform>();
-
-        i_rotation_orientation = Random.Range(-1.1f, 1f) >= 0 ? 1 : -1;
-        //! Rotation goes backwards (if we want to move to the right, the z change must be negative, thats why the "-")
-        f_rand_rotation_speed = Random.Range(3f, 20f) * -i_rotation_orientation;
-        StartCoroutine(AutoDestroy());
-    }
-
-    private void MovingCurve()
-    {
-        float f_x = Mathf.Abs(m_rect_trans.localPosition.x) + Random.Range(10,20);
-        float f_y = 18 * Mathf.Sqrt(f_x);
-        Debug.Log(f_x);
-        //! Rotation orientation must be place into the position as well
-        m_rect_trans.localPosition = new Vector3(f_x * i_rotation_orientation, f_y,0);
-        m_rect_trans.Rotate(new Vector3(0, 0, f_rand_rotation_speed));
-    }
-
-    private Vector2 Wooble(float f_time)
-    {
-        return new Vector2(Mathf.Sin(f_time * 3.3f), Mathf.Cos(f_time  * 2.8f));
     }
 
     public void Update()
     {
-        Debug.Log("Updating");
-        m_s_text.ForceMeshUpdate();
-        m_mesh = m_s_text.mesh;
-        m_vertices = m_mesh.vertices;/*
-
-        for(int i = 0; i < m_vertices.Length; i++)
-        {
-            Vector3 v3_offset = Wooble(Time.deltaTime * (i+1));
-            m_vertices[i] = m_vertices[i] + v3_offset;
-        }
-
-        */
-        for (int i = 0; i < m_s_text.textInfo.characterCount; i++)
-        {
-            TMP_CharacterInfo tmp_char_info = m_s_text.textInfo.characterInfo[i];
-            int index = tmp_char_info.vertexIndex;
-
-            Vector3 offset = Wooble(Time.time + i*Random.Range(0,5)) * 2;
-            m_vertices[index] += offset;
-            m_vertices[index + 1] += offset;
-            m_vertices[index + 2] += offset;
-            m_vertices[index + 3] += offset;
-        }
-
-        m_mesh.vertices = m_vertices;
-        m_s_text.canvasRenderer.SetMesh(m_mesh);
-        MovingCurve();
+        m_actual_text_fx.ApplyEffect();
     }
 
     public void SetCorrectness(ECorrectness e_correctness)
