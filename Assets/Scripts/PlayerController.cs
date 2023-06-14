@@ -19,8 +19,9 @@ public class PlayerController : MonoBehaviour
     {
         m_v2.x = Input.GetAxis("Horizontal");
         m_v2.y = Input.GetAxis("Vertical");
-        m_v2.Normalize();
-
+        //m_v2.Normalize();
         m_rb.velocity = new Vector3(m_v2.x * f_speed, m_rb.velocity.y, m_v2.y * f_speed);
+
+        this.transform.rotation = new Quaternion(0,0,0,0);
     }
 }
