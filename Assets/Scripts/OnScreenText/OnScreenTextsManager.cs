@@ -7,6 +7,7 @@ using TMPro;
 [System.Serializable]
 public class OnScreenTextsManager : MonoBehaviour
 {
+    public Font m_font;
     private string[] s_possible_strings = new string[(int)ECorrectness.ECount] { "Perfect", "Good", "Not bad", "Awful" };
     private const TextAnchor upperLeft = TextAnchor.UpperLeft;
     private TextMeshProUGUI m_s_text;
@@ -39,7 +40,7 @@ public class OnScreenTextsManager : MonoBehaviour
         go_temp.name = "TempGO";
 
         m_s_text = go_temp.AddComponent<TextMeshProUGUI>();
-        m_s_text.font = (TMPro.TMP_FontAsset)Resources.Load("MyFont");
+        m_s_text.font = TMP_FontAsset.CreateFontAsset(m_font);
         m_s_text.fontSize = 50;
         m_s_text.alignment = TextAlignmentOptions.Center;
         m_s_text.verticalAlignment = VerticalAlignmentOptions.Middle;
