@@ -37,5 +37,6 @@ public class PlayerController : MonoBehaviour
             b_moving_right = false;
             m_animator.SetTrigger("FlipRight");
         }
+
     }
 }

@@ -857,7 +857,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de9361418001f4fefba768bf5165fa0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  go_terrain: {fileID: 660113831}
+  Brush: {fileID: 5464970546950926442, guid: f4013c1f32dae4af28db676466554968, type: 3}
+  MainCharacter: {fileID: 0}
 --- !u!4 &645873779
 Transform:
   m_ObjectHideFlags: 0
@@ -1510,6 +1511,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2584552722098765403, guid: cd5e0f9ca1a8b4799a395c3027725222,
+        type: 3}
+      propertyPath: m_texture_changer
+      value: 
+      objectReference: {fileID: 645873778}
     - target: {fileID: 2584552722098765407, guid: cd5e0f9ca1a8b4799a395c3027725222,
         type: 3}
       propertyPath: m_Name
