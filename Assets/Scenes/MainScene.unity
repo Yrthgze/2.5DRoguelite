@@ -861,6 +861,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Brush: {fileID: 5464970546950926442, guid: f4013c1f32dae4af28db676466554968, type: 3}
   MainCharacter: {fileID: 0}
+  jj: 0
 --- !u!4 &645873779
 Transform:
   m_ObjectHideFlags: 0
@@ -1562,6 +1563,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2584552722098765403, guid: cd5e0f9ca1a8b4799a395c3027725222,
+        type: 3}
+      propertyPath: f_speed
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 2584552722098765403, guid: cd5e0f9ca1a8b4799a395c3027725222,
         type: 3}
