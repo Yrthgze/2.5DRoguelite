@@ -75,11 +75,11 @@ public class Brooms : MonoBehaviour
     {
         float f_x_dir = go_player.transform.position.x - transform.position.x;
         float f_z_dir = go_player.transform.position.z - transform.position.z;
-        /*int i_x_sign = f_x_dir >= 0 ? 1 : -1;
+        int i_x_sign = f_x_dir >= 0 ? 1 : -1;
         int i_z_sign = f_z_dir >= 0 ? 1 : -1;
-        f_x_dir = Mathf.Abs(f_x_dir) > 20 ? i_x_sign * 20 : f_x_dir;
-        f_z_dir = Mathf.Abs(f_z_dir) > 20 ? i_z_sign * 20 : f_z_dir;*/
-        Vector3 v3 = new Vector3(f_x_dir, 0,f_z_dir).normalized * f_force;
+        f_x_dir = Mathf.Abs(f_x_dir) < 5 ? i_x_sign * 20 : f_x_dir;
+        f_z_dir = Mathf.Abs(f_z_dir) < 5 ? i_z_sign * 20 : f_z_dir;
+        Vector3 v3 = new Vector3(f_x_dir, 0, f_z_dir) * f_force;
         m_rg.AddForce(v3, ForceMode.Impulse);
 
     }

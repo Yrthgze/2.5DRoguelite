@@ -203,7 +203,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 895923246, guid: 11c8970519dca486bb14855d43912d79, type: 3}
       propertyPath: f_force
-      value: 40
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 895923250, guid: 11c8970519dca486bb14855d43912d79, type: 3}
+      propertyPath: m_Radius
+      value: 2.567779
+      objectReference: {fileID: 0}
+    - target: {fileID: 895923250, guid: 11c8970519dca486bb14855d43912d79, type: 3}
+      propertyPath: m_Center.y
+      value: 2.7061682
       objectReference: {fileID: 0}
     - target: {fileID: 895923250, guid: 11c8970519dca486bb14855d43912d79, type: 3}
       propertyPath: m_Direction
@@ -269,6 +277,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Brooms
       objectReference: {fileID: 0}
+    - target: {fileID: 1657216854745551969, guid: 11c8970519dca486bb14855d43912d79,
+        type: 3}
+      propertyPath: m_TagString
+      value: Cleaner
+      objectReference: {fileID: 0}
+    - target: {fileID: 1657216854745551970, guid: 11c8970519dca486bb14855d43912d79,
+        type: 3}
+      propertyPath: m_Drag
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1657216854745551970, guid: 11c8970519dca486bb14855d43912d79,
         type: 3}
       propertyPath: m_Mass
@@ -277,12 +295,12 @@ PrefabInstance:
     - target: {fileID: 1657216854745551970, guid: 11c8970519dca486bb14855d43912d79,
         type: 3}
       propertyPath: m_UseGravity
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1657216854745551970, guid: 11c8970519dca486bb14855d43912d79,
         type: 3}
       propertyPath: m_CollisionDetection
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11c8970519dca486bb14855d43912d79, type: 3}
