@@ -203,19 +203,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 895923246, guid: 11c8970519dca486bb14855d43912d79, type: 3}
       propertyPath: f_force
-      value: 500
-      objectReference: {fileID: 0}
-    - target: {fileID: 895923250, guid: 11c8970519dca486bb14855d43912d79, type: 3}
-      propertyPath: m_Radius
-      value: 2.567779
-      objectReference: {fileID: 0}
-    - target: {fileID: 895923250, guid: 11c8970519dca486bb14855d43912d79, type: 3}
-      propertyPath: m_Center.y
-      value: 2.7061682
-      objectReference: {fileID: 0}
-    - target: {fileID: 895923250, guid: 11c8970519dca486bb14855d43912d79, type: 3}
-      propertyPath: m_Direction
-      value: 0
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 1657216854745551968, guid: 11c8970519dca486bb14855d43912d79,
         type: 3}
@@ -290,20 +278,29 @@ PrefabInstance:
     - target: {fileID: 1657216854745551970, guid: 11c8970519dca486bb14855d43912d79,
         type: 3}
       propertyPath: m_Mass
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 1657216854745551970, guid: 11c8970519dca486bb14855d43912d79,
-        type: 3}
-      propertyPath: m_UseGravity
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1657216854745551970, guid: 11c8970519dca486bb14855d43912d79,
-        type: 3}
-      propertyPath: m_CollisionDetection
-      value: 1
+      value: 500
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11c8970519dca486bb14855d43912d79, type: 3}
+--- !u!1 &126839129 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1657216854745551969, guid: 11c8970519dca486bb14855d43912d79,
+    type: 3}
+  m_PrefabInstance: {fileID: 126839128}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &126839130
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 126839129}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.484583, y: 3.5380843, z: 1.9893154}
+  m_Center: {x: 1.2422915, y: 1.9973112, z: 1.2557669}
 --- !u!1 &150054079
 GameObject:
   m_ObjectHideFlags: 0

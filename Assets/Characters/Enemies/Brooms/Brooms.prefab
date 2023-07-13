@@ -69,8 +69,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 259516087428911779, guid: c53b18208277f4c808fe94239b72ab87,
         type: 3}
+      propertyPath: m_Drag
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 259516087428911779, guid: c53b18208277f4c808fe94239b72ab87,
+        type: 3}
       propertyPath: m_Mass
-      value: 10
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 259516087428911779, guid: c53b18208277f4c808fe94239b72ab87,
         type: 3}
@@ -97,17 +102,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d639625be33b94d68b6df77fc5f014e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!136 &895923250
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1657216854745551969}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 2.6575847
-  m_Height: 7.1554193
-  m_Direction: 1
-  m_Center: {x: 0.1959989, y: 2.6163626, z: 2.0075889}
+  f_force: 0
